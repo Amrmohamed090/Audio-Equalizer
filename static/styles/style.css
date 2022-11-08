@@ -1,0 +1,54 @@
+body{
+    font: 15px helvetica,arial,freesans,clean,sans-serif;
+    margin: 20px auto;    
+    text-align: center;
+    max-width: 2000px;
+  }
+  #waveform{
+    width: 100%;
+    background: rgba(0,0,0,0.8);
+  }
+  #wave-spectrogram{
+    margin: 10px auto;
+    position: relative;
+  }
+  #wave-spectrogram canvas{
+    left: 0;
+  }
+  
+  #specLabels{
+      position: absolute!important;
+  }
+  
+  button{
+    background: #eee;
+    border: 1px solid #ddd;
+    border-bottom: 4px solid #ccc;
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: 10px;
+    padding: 10px;
+  }
+  button:active{
+    outline: none;
+    border-top: 4px solid #eee;
+    border-bottom: 2px solid #777;
+  }
+  button:focus{
+    outline: none;
+  }
+  
+  #sliders{
+    display: flex;
+  flex-wrap: wrap;
+  /* for horizontal aligning of child divs */
+  justify-content: center;
+  /* for vertical aligning */
+  align-items: center;
+  }
+  .vranger{
+    width: 7%;
+    height: 10%;
+    transform: rotate(270deg); -moz-transform: rotate(270deg);
+    
+  }
