@@ -1,7 +1,6 @@
 from flask import Flask , render_template, redirect,url_for,request,send_from_directory,session
 import json
 from flask_session import Session
-from werkzeug.utils import secure_filename
 import librosa
 import os
 from scipy.fftpack import rfft, irfft, fftfreq, fft
@@ -75,6 +74,7 @@ def main():
             sliders_values = get_sliders_values(request)
             if sliders_values != session["sliders"]:
                 session["sliders"] = sliders_values
+                session["mode"] = request.form["Mode"]
           
             
                 

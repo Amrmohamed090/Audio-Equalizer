@@ -28,7 +28,7 @@
         <div id="waveform"></div>
         <div id="wave-spectrogram"></div>
         <div id="minimap"></div>
-        <button class="accordion">Section 1</button>
+        <button class="accordion">View Spectogram</button>
         <div class="panel">
           <p>Lorem ipsum...</p>
         </div>
@@ -40,15 +40,35 @@
   
   
         <div class="radios">
-          
-            <input type="radio" id="uniform" name="Mode" value="uniform" {% if mode == 'uniform'%}checked="checked"{%endif%}>
+            {% if mode == 'uniform' %}
+            <input type="radio" id="uniform" name="Mode" value="uniform"  checked="checked">
+            {%else%}
+            <input type="radio" id="uniform" name="Mode" value="uniform">
+            {%endif%}
             <label for="uniform">Uniform</label><br>
-            <input type="radio" id="musical" name="Mode" value="musical" {% if mode == 'musical'%}checked="checked"{%endif%}>
+
+            {% if mode == 'musical' %}
+            <input type="radio" id="musical" name="Mode" value="musical" checked="checked">
+            {%else%}
+            <input type="radio" id="musical" name="Mode" value="musical">
+            {%endif%}
             <label for="musical">Musical</label><br>
-            <input type="radio" id="vocal" name="Mode" value="vocal" {% if mode == 'vocal'%}checked="checked"{%endif%}>
+
+            {% if mode == 'vocal' %} 
+            <input type="radio" id="vocal" name="Mode" value="vocal" checked="checked">
+            {%else%}
+            <input type="radio" id="vocal" name="Mode" value="vocal" >
+            {%endif%}
             <label for="vocal">Vocal</label><br>
-            <input type="radio" id="ECG" name="Mode" value="ECG" {% if mode == 'ECG'%}checked="checked"{%endif%}>
+
+
+            {% if mode == 'ECG'%}
+            <input type="radio" id="ECG" name="Mode" value="ECG" checked="checked">
+            {%else%}
+            <input type="radio" id="ECG" name="Mode" value="ECG" >
+            {%endif%}
             <label for="ECG">ECG</label>
+
             <div class="buttons">
               <button type="submit" name="" value="submit" class="sin btn btn-primary">
                 <span>Submit</span>
@@ -105,7 +125,7 @@ for (var i = 0, length = radios.length; i < length; i++) {
       for (var i = 0; i < len; i++) {
         const slider_id = "slider" + i
 
-        str= str +'<div class="input col-1"><p class="range-name">1500Hz <br> 2000Hz</p><input type="range" class="vranger" name="'+slider_id +'" value='+sliders_vals[i]+ ' min="-20" max="20" oninput="this.nextElementSibling.value = this.value""/> <output class="slider-output">'+sliders_vals[i]+'</output></div>'
+        str= str +'<div class="input col-1"><p class="row range-name">1500Hz <br> 2000Hz</p><input type="range" class="vranger row" name="'+slider_id +'" value='+sliders_vals[i]+ ' min="-20" max="20" oninput="this.nextElementSibling.value = this.value""/> <output class="slider-output row">'+sliders_vals[i]+'</output></div>'
 
           }
 
@@ -133,10 +153,10 @@ for (var i = 0; i < rad.length; i++) {
       for (var i = 0; i < len; i++) {
         const slider_id = "slider" + i
         if(sliders_vals2[i] != null){
-          str= str +'<div class="input col-1"><p class="range-name">1500Hz <br> 2000Hz</p><input type="range" class="vranger" name="'+slider_id +'" value='+sliders_vals2[i]+ ' min="-20" max="20" oninput="this.nextElementSibling.value = this.value""/> <output class="slider-output">'+sliders_vals2[i]+'</output></div>'
+          str= str +'<div class="input col-1"><p class="row range-name">1500Hz <br> 2000Hz</p><input type="range" class="vranger row" name="'+slider_id +'" value='+sliders_vals2[i]+ ' min="-20" max="20" oninput="this.nextElementSibling.value = this.value""/> <output class="slider-output row">'+sliders_vals2[i]+'</output></div>'
         }
         else{
-          str= str +'<div class="input col-1"><p class="range-name">1500Hz <br> 2000Hz</p><input type="range" class="vranger" name="'+slider_id +'" value=0 min="-20" max="20" oninput="this.nextElementSibling.value = this.value""/> <output class="slider-output">0</output></div>'
+          str= str +'<div class="input col-1"><p class="row range-name">1500Hz <br> 2000Hz</p><input type="range" class="vranger row" name="'+slider_id +'" value=0 min="-20" max="20" oninput="this.nextElementSibling.value = this.value""/> <output class="slider-output row">0</output></div>'
         }
 
 
