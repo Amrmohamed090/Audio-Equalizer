@@ -10,59 +10,81 @@
     <!--    import google fonts-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;1,300;1,400;1,500;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <!--    -->
     <link rel="stylesheet" href="../static/styles/all.min.css">
-    <link rel="stylesheet" href="../static/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/styles/bootstrap-grid.css">
     <link rel="stylesheet" href="../static/styles/style.css">
+    
     <title>Equalizer</title>
     
 </head>
 <body>
-  <div class="mode">
-  <form method="post" name="change_mode" enctype=multipart/form-data>
+
+  <div class="container"> 
+
+    <div id="original"></div>
+        <div id="minimap2"></div>
+        <div id="waveform"></div>
+        <div id="wave-spectrogram"></div>
+        <div id="minimap"></div>
+        <button class="accordion">Section 1</button>
+        <div class="panel">
+          <p>Lorem ipsum...</p>
+        </div>
   
-        <input type="radio" id="uniform" name="Mode" value="uniform" checked="checked">
-        <label for="uniform">Uniform</label><br>
-        <input type="radio" id="musical" name="Mode" value="musical">
-        <label for="musical">Musical</label><br>
-        <input type="radio" id="vocal" name="Mode" value="vocal">
-        <label for="vocal">Vocal</label><br>
-        <input type="radio" id="ECG" name="Mode" value="ECG">
-        <label for="ECG">ECG</label>
+    <form method="post" name="change_mode" enctype=multipart/form-data>
+      <div class="formats">
         
-        
-        
-      
-        <div class="audio-editor">
+  
+  
+  
+        <div class="radios">
           
-        <div class="sliders" id="sliders" >
-      </div>
+            <input type="radio" id="uniform" name="Mode" value="uniform" {% if mode == 'uniform'%}checked="checked"{%endif%}>
+            <label for="uniform">Uniform</label><br>
+            <input type="radio" id="musical" name="Mode" value="musical" {% if mode == 'musical'%}checked="checked"{%endif%}>
+            <label for="musical">Musical</label><br>
+            <input type="radio" id="vocal" name="Mode" value="vocal" {% if mode == 'vocal'%}checked="checked"{%endif%}>
+            <label for="vocal">Vocal</label><br>
+            <input type="radio" id="ECG" name="Mode" value="ECG" {% if mode == 'ECG'%}checked="checked"{%endif%}>
+            <label for="ECG">ECG</label>
+            <div class="buttons">
+              <button type="submit" name="" value="submit" class="sin btn btn-primary">
+                <span>Submit</span>
+              </button>
+            </div>
 
-      <button type="submit" name="" value="submit" class="sin btn btn-primary mt-4" style="width: 100px;">Submit</button>
-</form>
-</div>
-</div>
-
-<div class="fileUpload">
-    <form method="post" enctype=multipart/form-data>
-        <input type="file" id="file" name=file>
-        <button type="submit" name="" value="upload" class="sin btn btn-primary mt-4" style="width: 100px;">Upload</button>
-    </form>
-  </div>
-
-      <div id="original"></div>
-      <div id="minimap2"></div>
-      <div id="waveform"></div>
-      <div id="wave-spectrogram"></div>
-      <div id="minimap"></div>
-
-      <button class="btn btn-primary" onclick="run()">
-      <i class="glyphicon glyphicon-play"></i>
-      Play/Pause
-      </button>
-
+        </div>
+            
+            
+  
+            <div class="sliders row card" id="sliders" >
+            </div>
     
+    
+      </div>
+  </form>
+  </div>
+</div>
+  <div class="footer">
+    <div class="container">
+
+
+      <div class="fileUpload">
+          <form method="post" enctype=multipart/form-data>
+              <input type="file" id="file" name=file>
+              <button type="submit" name="" value="upload" class="sin btn btn-primary ">Upload</button>
+          </form>
+        </div>
+      
+            
+            <button class="btn btn-primary" onclick="run()">
+            <i class="glyphicon glyphicon-play"></i>
+            Play/Pause
+            </button>
+    </div>
+  </div>
 </body>
 <script>
 
@@ -71,6 +93,7 @@
 var radios = document.getElementsByName('Mode');
 var prev = null;
 var mode = ""
+const sliders_vals = {{ sliders_values|safe }}
 for (var i = 0, length = radios.length; i < length; i++) {
   if (radios[i].checked) {
     mode = radios[i].value;
@@ -81,7 +104,8 @@ for (var i = 0, length = radios.length; i < length; i++) {
       console.log(len)
       for (var i = 0; i < len; i++) {
         const slider_id = "slider" + i
-        str= str +'<input type="range" class="vranger" name="'+slider_id +'" value="0" min="-20" max="20" oninput="this.nextElementSibling.value = this.value""/> <output></output>'
+
+        str= str +'<div class="input col-1"><p class="range-name">1500Hz <br> 2000Hz</p><input type="range" class="vranger" name="'+slider_id +'" value='+sliders_vals[i]+ ' min="-20" max="20" oninput="this.nextElementSibling.value = this.value""/> <output class="slider-output">'+sliders_vals[i]+'</output></div>'
 
           }
 
@@ -92,8 +116,8 @@ for (var i = 0, length = radios.length; i < length; i++) {
 }
 
 var rad = document.change_mode.Mode;
-const sliders_vals = {{ sliders_values|safe }}
-console.log(sliders_vals)
+
+
 for (var i = 0; i < rad.length; i++) {
     rad[i].addEventListener('change', function() {
         if (this !== prev) {
@@ -101,12 +125,20 @@ for (var i = 0; i < rad.length; i++) {
         }
         mode = this.value
         number_of_sliders={"uniform":10,"musical":4,"vocal":4,"ECG":3}
+
       len = number_of_sliders[mode]
       var sliders_div = document.getElementById("sliders");
       var str = ""
+      const sliders_vals2 = [0,0,0,0,0,0,0,0,0,0]
       for (var i = 0; i < len; i++) {
         const slider_id = "slider" + i
-        str= str +'<input type="range" class="vranger" name="'+slider_id +'" value="0" min="-20" max="20" oninput="this.nextElementSibling.value = this.value""/> <output></output>'
+        if(sliders_vals2[i] != null){
+          str= str +'<div class="input col-1"><p class="range-name">1500Hz <br> 2000Hz</p><input type="range" class="vranger" name="'+slider_id +'" value='+sliders_vals2[i]+ ' min="-20" max="20" oninput="this.nextElementSibling.value = this.value""/> <output class="slider-output">'+sliders_vals2[i]+'</output></div>'
+        }
+        else{
+          str= str +'<div class="input col-1"><p class="range-name">1500Hz <br> 2000Hz</p><input type="range" class="vranger" name="'+slider_id +'" value=0 min="-20" max="20" oninput="this.nextElementSibling.value = this.value""/> <output class="slider-output">0</output></div>'
+        }
+
 
           }
 
@@ -117,5 +149,6 @@ for (var i = 0; i < rad.length; i++) {
 
 </script>
 <script src="../static/script/main.js"></script>
+
 
 </html>

@@ -64,18 +64,29 @@ def get_sliders_values(req):
 
 @app.route("/",methods = ['POST', 'GET'])
 def main():
+    if (not "mode" in session) or (not "sliders" in session):
+         session["mode"] = "uniform"
+         session["sliders"] = [0,0,0,0,0,0,0,0,0,0]
     if request.method == "GET":
         pass
 
     if request.method == "POST":
         if request.form:
             sliders_values = get_sliders_values(request)
+            if sliders_values != session["sliders"]:
+                session["sliders"] = sliders_values
+          
+            
+                
+            
+            
         #to do:check if file is empty
             print(sliders_values)
         #file = request.files['file']
         #fft(file)
-            return render_template('index.html',sliders_values=json.dumps(sliders_values))
+            print(request.form["Mode"])
+        return render_template('index.html',sliders_values=json.dumps(session["sliders"]), mode = session["mode"] )
         
 
-    return render_template('index.html' , sliders_values=None)
+    return render_template('index.html' ,sliders_values=json.dumps(session["sliders"]), mode = session["mode"])
 

@@ -1,13 +1,28 @@
-body{
-    font: 15px helvetica,arial,freesans,clean,sans-serif;
-    margin: 20px auto;    
-    text-align: center;
-    max-width: 2000px;
-  }
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  user-select: none;
+
+}
+
+body {
+  padding: 30px 40px;
+    position: relative;
+    min-height: 410px;
+    background-color: #8BC6EC;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+    }
+
   #waveform{
-    width: 100%;
     background: rgba(0,0,0,0.8);
-  }
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+    margin-left: -16px;    
+    }
   #wave-spectrogram{
     margin: 10px auto;
     position: relative;
@@ -46,9 +61,234 @@ body{
   /* for vertical aligning */
   align-items: center;
   }
+
+  .formats {
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 5%;
+}
+
+
   .vranger{
-    width: 7%;
-    height: 10%;
     transform: rotate(270deg); -moz-transform: rotate(270deg);
+    margin-bottom: 70px;
+
     
   }
+  .sliders {
+    width: 92%;
+    border-radius: 15px;
+    background-color: rgba(0,0,0,.25);
+    user-select: none;
+  
+  }
+
+
+
+
+  .audio-editor .sliders {
+    height: 100%;
+  }
+
+.slider-output{
+  margin: 115.01%;
+}
+
+
+  .radios {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 12.5%;
+    margin-left: 10px;
+
+
+  }
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+    flex-direction: row;
+
+
+    border-radius: 15px;
+    background-color: #fff;
+    border: 1px solid hsla(0,0%,100%,0);
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    padding-right: 50px;
+
+  }
+
+  .range-name {
+    margin-bottom: 70px;
+    margin-right: -76px;
+    text-align: center;  
+  }
+
+.footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 70px;
+}
+  
+
+.radios {
+  color:white;
+}
+
+.radios input {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+
+button {
+
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  border-color: #dcdfe6;
+  color: #606266;
+  text-align: center;
+  box-sizing: border-box;
+  outline: none;
+  margin: 0;
+  transition: .1s;
+  font-weight: 500;
+ 
+  padding: 12px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+button {
+  border-radius: 15px;
+  background-color: #fff;
+  border: 1px solid hsla(0,0%,100%,0);
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  box-sizing: border-box;
+  padding: 0 20px;
+  height: 50px;
+  min-width: 100px;
+}
+
+button:hover {
+  background-color: #8BC6EC;
+  background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+  
+}
+
+  /* #40738d */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  input[type='radio']:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: white;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #8BC6EC;
+    background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+
+/* 
+background-color: #8BC6EC;
+background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%); */
+
+
+
+
+
+
+.accordion {
+  background: #fff !important;
+  color: black !important;
+  cursor: pointer;
+  padding: 18px;
+  width: calc(101% + 4px);
+  border: none;
+  outline: none;
+  text-align: center;
+  background-image: none;
+  transition: 0.5s;
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+  margin-left: -15px;
+  margin-top: -9px;
+}
+
+.accordion:hover {
+  background-color: #eee !important;
+  color: #444 !important;
+  background-image: none;
+}
+
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  display: none;
+  overflow: hidden;
+  transition: 1s;
+}
+
+button:hover {
+  background-color: #8BC6EC;
+  background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+  
+}
