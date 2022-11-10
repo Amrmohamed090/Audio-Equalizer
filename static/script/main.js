@@ -21,6 +21,7 @@ wavesurfer.on("ready", function () {
     container: "#wave-spectrogram",
     fftSamples: 1024,
     labels: true,
+    overflow: hidden
   });
 });
 
@@ -32,7 +33,9 @@ wavesurfer.on("ready", function () {
     progressColor: "#999",
     cursorColor: "#68A93D",
     barHeight: 1.4,
+    overflow: hidden
   });
+  
 });
 
 wavesurfer.load("static/audio/proccessed.wav");
@@ -46,6 +49,8 @@ var wavesurfer_original = WaveSurfer.create({
   cursorColor: "#fff",
   // This parameter makes the waveform look like SoundCloud's player
   barWidth: 3,
+  
+  
 });
 
 var minimap;
@@ -57,15 +62,28 @@ wavesurfer_original.on("ready", function () {
     cursorColor: "#68A93D",
     hideScrollbar: true,
     barHeight: 1.4,
+    
   });
 });
+var slider = document.getElementById('zoom-slider');
+
+slider.addEventListener('input', wavesurfer.util.debounce(function () {
+  wavesurfer.zoom(Number(this.value))
+  wavesurfer_original.zoom(Number(this.value));
+}, 100));
 
 wavesurfer_original.load("static/audio/original.wav");
 wavesurfer_original.setVolume(0);
 function run() {
+  wavesurfer.load("static/audio/proccessed.wav");
   wavesurfer.playPause();
   wavesurfer_original.playPause();
 }
+
+
+
+
+
 wavesurfer.on("seek", (position) => {
   // Dont emit seek event
   wavesurfer_original.setDisabledEventEmissions(["seek"]);
@@ -84,6 +102,8 @@ wavesurfer_original.on("seek", (position) => {
   // Allow all events to be emitted again
   wavesurfer.setDisabledEventEmissions([]);
 });
+
+
 
 var acc = document.getElementsByClassName("accordion");
 var i;

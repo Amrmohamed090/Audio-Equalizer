@@ -20,7 +20,8 @@ body {
   #waveform{
     background: rgba(0,0,0,0.8);
     border-radius: 20px 20px 0 0;
-    overflow: hidden;
+    overflow: hidden !important;
+    
     margin-left: -16px;    
     }
   #wave-spectrogram{
@@ -34,7 +35,15 @@ body {
   #specLabels{
       position: absolute!important;
   }
-  
+  .upload-button{
+    background: #eee;
+    border: 1px solid #ddd;
+    border-bottom: 4px solid #ccc;
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: 10px;
+    padding: 10px;
+  }
   button{
     background: #eee;
     border: 1px solid #ddd;
@@ -68,8 +77,11 @@ body {
     margin-top: 5%;
 }
 
+  .virtical{
+    transform: rotate(270deg); 
+  }
 
-  .vranger{
+  .ranger{
     
     -webkit-appearance: none;  /* Override default CSS styles */
      appearance: none;
@@ -80,17 +92,29 @@ body {
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
   -webkit-transition: .2s; /* 0.2 seconds transition on hover */
   transition: opacity .2s;
-  transform: rotate(270deg); 
+   
 
     
   }
-  .vranger::-webkit-slider-thumb {
+  .ranger::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
     width: 25px; /* Set a specific slider handle width */
     height: 25px; /* Slider handle height */
-    background: #9599E2 ; /* Green background */
+    background: #21235c ; /* Green background */
     cursor: pointer; /* Cursor on hover */
+  }
+  .ranger::-webkit-slider-thumb:hover {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    background: #1a1a51 ; /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+  
+  .zoom{
+    width: 700%;
+    
+
   }
   .sliders {
     width: 92%;
