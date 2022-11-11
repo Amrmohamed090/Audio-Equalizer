@@ -4,6 +4,13 @@ fileSelector.addEventListener("change", (event) => {
   const fileList = event.target.fileList;
 });
 
+WaveSurfer.util
+        .fetchFile({ url: './static/script/colordata.json', responseType: 'json' })
+        .on('success', colorMap => {
+            initAndLoadSpectrogram(colorMap);
+        });
+
+
 var wavesurfer = WaveSurfer.create({
   // Use the id or class-name of the element you created, as a selector
   container: "#waveform",
@@ -13,30 +20,29 @@ var wavesurfer = WaveSurfer.create({
   cursorColor: "#fff",
   // This parameter makes the waveform look like SoundCloud's player
   barWidth: 3,
-});
-wavesurfer.on("ready", function () {
-  var spectrogram = Object.create(WaveSurfer.Spectrogram);
-  spectrogram.init({
-    wavesurfer: wavesurfer,
-    container: "#wave-spectrogram",
-    fftSamples: 1024,
-    labels: true,
-    overflow: hidden
-  });
+  plugins: [
+    WaveSurfer.spectrogram.create({
+        wavesurfer: wavesurfer,
+        container: "#wave-spectrogram",
+        labels: true,
+        
+    })
+]
+  
+ 
 });
 
-var minimap;
-wavesurfer.on("ready", function () {
-  minimap = wavesurfer.initMinimap({
-    height: 30,
-    waveColor: "#ddd",
-    progressColor: "#999",
-    cursorColor: "#68A93D",
-    barHeight: 1.4,
-    overflow: hidden
-  });
-  
-});
+//wavesurfer.on('ready', function () {
+  //var spectrogram = Object.create(WaveSurfer.Spectrogram);
+  //spectrogram.init({
+   // wavesurfer: wavesurfer,
+   // container: "#wave-spectrogram",
+   // fftSamples: 1024,
+   // labels: true
+  //});
+//});
+
+
 
 wavesurfer.load("static/audio/proccessed.wav");
 
@@ -49,22 +55,18 @@ var wavesurfer_original = WaveSurfer.create({
   cursorColor: "#fff",
   // This parameter makes the waveform look like SoundCloud's player
   barWidth: 3,
-  
+  plugins: [
+    WaveSurfer.spectrogram.create({
+      wavesurfer_original: wavesurfer_original,
+        container: "#wave-spectrogram2",
+        labels: true,
+        
+    })
+]
   
 });
 
-var minimap;
-wavesurfer_original.on("ready", function () {
-  minimap = wavesurfer_original.initMinimap({
-    height: 30,
-    waveColor: "#ddd",
-    progressColor: "#999",
-    cursorColor: "#68A93D",
-    hideScrollbar: true,
-    barHeight: 1.4,
-    
-  });
-});
+
 var slider = document.getElementById('zoom-slider');
 
 slider.addEventListener('input', wavesurfer.util.debounce(function () {
@@ -74,10 +76,32 @@ slider.addEventListener('input', wavesurfer.util.debounce(function () {
 
 wavesurfer_original.load("static/audio/original.wav");
 wavesurfer_original.setVolume(0);
-function run() {
-  wavesurfer.load("static/audio/proccessed.wav");
-  wavesurfer.playPause();
-  wavesurfer_original.playPause();
+function UpdateStatus() {
+  if (wavesurfer.isPlaying() || wavesurfer_original.isPlaying()){
+    
+    wavesurfer.pause();
+    wavesurfer_original.pause();
+    wavesurfer.load("static/audio/proccessed.wav");
+    wavesurfer.on('ready', function () {
+      wavesurfer.play(wavesurfer_original.getCurrentTime());
+      wavesurfer_original.play();
+  });
+
+  }
+  else{
+    wavesurfer.load("static/audio/proccessed.wav");
+  }
+}
+function play(){
+  if (wavesurfer.isPlaying() || wavesurfer_original.isPlaying()){
+    wavesurfer.pause();
+    wavesurfer_original.pause();
+  }
+  else{
+    wavesurfer_original.play();
+    wavesurfer.play(wavesurfer_original.getCurrentTime());
+    
+  }
 }
 
 
@@ -123,3 +147,4 @@ for (i = 0; i < acc.length; i++) {
     }
   });
 }
+

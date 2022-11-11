@@ -3,7 +3,7 @@ import json
 from flask_session import Session
 import librosa
 import os
-from scipy.fftpack import rfft, irfft, fftfreq, fft
+from scipy.fftpack import rfft, irfft, rfftfreq
 import soundfile as sf
 
 modes = {"uniform":[20,31,63,125,250,500,1000,2000,4500,9000,20000],
@@ -42,10 +42,10 @@ def new_audio(audio, sr):
 def uniform(length,sr,gains,f_signal):
     ranges = [20,31,63,125,250,500,1000,2000,4500,9000,20000]
     sample_period = 1/sr
-    W = fftfreq(length, d=sample_period)
+    W = rfftfreq(length, d=sample_period)
     cuttoff = f_signal.copy()
     for i in range(len(gains)-1):
-        cuttoff[(W<ranges[i+1]) & (W>ranges[i])] *= 10**(int(gains[i])/20) 
+        cuttoff[((W<ranges[i+1]) & (W>ranges[i]))|((W<ranges[i+1]) & (W>ranges[i]))] *= 10**(int(gains[i])*10/20) 
 
         
     audio = irfft(cuttoff)
@@ -104,6 +104,7 @@ def main():
 
             if session["mode"] == "uniform":
                 uniform(session["len_audio"],session["sr"], session["sliders"], session["fft"])
+                
 
             elif session["mode"] == "musical":
                 uniform(session["len_audio"],session["sr"], session["sliders"],session["fft"])
@@ -122,7 +123,7 @@ def main():
                 new_audio(audio, session["sr"])
                 session["len_audio"]= len(audio)
                 session["fft"] = rfft(audio)
-                
+                session["sliders"] = [0,0,0,0,0,0,0,0,0,0]
                 
             
             
@@ -135,5 +136,8 @@ def main():
     
     return render_template('index.html' ,sliders_values=json.dumps(session["sliders"]), mode = session["mode"])
 
+@app.route("/test",methods = ['POST', 'GET'])
+def test():
+    return render_template("tes.html")
 if __name__ == '__main__':
     app.run(debug=True)
