@@ -32,20 +32,19 @@
 </head>
 
 <body>
-
   <div class="container">
-
+    
     <div id="original"></div>
     <div class="visuals">
-      <div class="input col-1"><input type="range" id = "zoom-slider" class="ranger zoom row" title="zoom" name="" value=1 min="1" max="200" oninput="" /> <output></output></div>
-      <div id="minimap2"></div>
-      <div id="waveform"></div>
-  
-      <div id="minimap"></div>
       
-      <button class="accordion">View Spectogram</button>
-      <div class="wave-spectrogram" id = "wave-spectrogram"></div>
-      <div class="wave-spectrogram2" id = "wave-spectrogram2"></div>
+      <div id="waveform"></div>
+      
+        <button class="accordion">View Spectogram</button>
+        <div class="wave-spectrogram">
+          
+        <div class="wave-spectrogram1" id = "wave-spectrogram"></div>
+        <div class="wave-spectrogram2" id = "wave-spectrogram2"></div>
+      </div>
     </div>
 
     <form method="post" name="change_mode" id="change_mode" enctype=multipart/form-data>
@@ -97,6 +96,10 @@
         <div class="sliders row card" id="sliders"></div>
       </div>
     </form>
+    <div class="input row"  style="margin-top: 5%;">
+      <input type="range" id = "zoom-slider" class="ranger zoom col-2" title="zoom" name="" value=1 min="1" max="200" oninput="this.nextElementSibling.value = this.value" /><output class="">1</output>
+      <input type="range" id = "playback-slider" class="ranger playback col-2" title="playback" name="" value=1 min="0.25" max="2" step="0.25" onclick="change_speed()" oninput="this.nextElementSibling.value = this.value + 'x'"/><output class="">1x</output>
+    </div>
   </div>
   </div>
   <div class="footer">
@@ -105,16 +108,25 @@
 
       <div class="fileUpload">
         <form method="post" enctype=multipart/form-data>
-          <input type="file" id="file" name=file>
+          
+          <label class="custom-file-upload">
+          
+          <input type="file" id="file_upload" name=file>
+          Select
+          
+        </label>
+        <span id="file-selected"></span>
+        
+
           <button type="submit" name="upload" value="upload" class="upload-button">Upload</button>
         </form>
       </div>
 
 
-      <button class="btn btn-primary" onclick="play()">
-        <i class="glyphicon glyphicon-play"></i>
+      <button class="btn" onclick="play()">
         Play/Pause
       </button>
+      
     </div>
   </div>
 </body>
@@ -136,6 +148,9 @@
         serialized: $("#change_mode").serialize()
         
       },
+      success: function () {
+        UpdateStatus()
+    }
       
     })
   });
@@ -150,7 +165,10 @@ var radios = document.getElementsByName('Mode');
 var prev = null;
 var mode = ""
 const number_of_sliders = { "uniform": 10, "musical": 4, "vocal": 4, "ECG": 3 }
-
+const sliders_bands = { "uniform": ["31","63","125","250","500","1k","2k","4k","8k","16k"], 
+                        "musical": ["pluc","clap","drum","drip"], 
+                        "vocal": ["ai","i","a","o"], 
+                        "ECG": 3 }
   const sliders_vals = {{ sliders_values| safe }}
   for (var i = 0, length = radios.length; i < length; i++) {
     if (radios[i].checked) {
@@ -163,7 +181,7 @@ const number_of_sliders = { "uniform": 10, "musical": 4, "vocal": 4, "ECG": 3 }
       for (var i = 0; i < len; i++) {
         const slider_id = "slider" + i
 
-        str = str + '<div class="input col-1"><p class="row range-name">1500Hz <br> 2000Hz</p><input type="range" class="virtical ranger row" id = "slider" name="' + slider_id + '" value=' + sliders_vals[i] + ' min="-20" max="20" onchange="UpdateStatus()" oninput="this.nextElementSibling.value = this.value"/> <output class="slider-output row">' + sliders_vals[i] + '</output></div>'
+        str = str + '<div class="input col-1"><p class="row range-name">'+sliders_bands[mode][i]+'</p><input type="range" class="virtical ranger row" id = "slider" name="' + slider_id + '" value=' + sliders_vals[i] + ' min="-20" max="20" oninput="this.nextElementSibling.value = this.value"/> <output class="slider-output row">' + sliders_vals[i] + '</output></div>'
 
       }
 
@@ -191,10 +209,10 @@ const number_of_sliders = { "uniform": 10, "musical": 4, "vocal": 4, "ECG": 3 }
       for (var i = 0; i < len; i++) {
         const slider_id = "slider" + i
         if (sliders_vals2[i] != null) {
-          str = str + '<div class="input col-1"><p class="row range-name">1500Hz <br> 2000Hz</p><input type="range" class="virtical ranger row" id = "slider" name="' + slider_id + '" value=' + sliders_vals2[i] + ' min="-20" max="20" onchange="UpdateStatus()" oninput="this.nextElementSibling.value = this.value"/> <output class="slider-output row">' + sliders_vals2[i] + '</output></div>'
+          str = str + '<div class="input col-1"><p class="row range-name">'+sliders_bands[mode][i]+'</p><input type="range" class="virtical ranger row" id = "slider" name="' + slider_id + '" value=' + sliders_vals2[i] + ' min="-20" max="20" oninput="this.nextElementSibling.value = this.value"/> <output class="slider-output row">' + sliders_vals2[i] + '</output></div>'
         }
         else {
-          str = str + '<div class="input col-1"><p class="row range-name">1500Hz <br> 2000Hz</p><input type="range" class="virtical ranger row" id = "slider" name="' + slider_id + '" value=0 min="-20" max="20" onchange="UpdateStatus()" oninput="this.nextElementSibling.value = this.value"/> <output class="slider-output row">0</output></div>'
+          str = str + '<div class="input col-1"><p class="row range-name">'+sliders_bands[mode][i]+'</p><input type="range" class="virtical ranger row" id = "slider" name="' + slider_id + '" value=0 min="-20" max="20" oninput="this.nextElementSibling.value = this.value"/> <output class="slider-output row">0</output></div>'
         }
       }
       sliders_div.innerHTML = str;

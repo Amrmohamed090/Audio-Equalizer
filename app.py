@@ -1,28 +1,15 @@
-from flask import Flask , render_template, redirect,url_for,request,send_from_directory,session,jsonify
+from flask import Flask , render_template, redirect,url_for,request,send_from_directory,session,jsonify, make_response
+
 import json
 from flask_session import Session
 import librosa
 import os
-from scipy.fftpack import rfft, irfft, rfftfreq
+from scipy.fftpack import rfft, irfft, fftfreq
 import soundfile as sf
+import numpy as np
+from resources import *
 
-modes = {"uniform":[20,31,63,125,250,500,1000,2000,4500,9000,20000],
-        "musical":[20,125,250,500,1000,2000,4500,9000,20000],
-        "vocals":[20,125,250,5004500,9000,20000],
-        "EMG":[20500,1000,2000,4500,9000,20000],
-        }
-sliders = {
-    "slider0":0,
-    "slider1":0,
-    "slider2":0,
-    "slider3":0,
-    "slider4":0,
-    "slider5":0,
-    "slider6":0,
-    "slider7":0,
-    "slider8":0,
-    "slider9":0
-}
+
 
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
@@ -38,20 +25,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def new_audio(audio, sr):
     sf.write('./static/audio/original.wav', audio, sr, subtype='PCM_24')
     sf.write('./static/audio/proccessed.wav', audio, sr, subtype='PCM_24')
-
-def uniform(length,sr,gains,f_signal):
-    ranges = [20,31,63,125,250,500,1000,2000,4500,9000,20000]
-    sample_period = 1/sr
-    W = rfftfreq(length, d=sample_period)
-    cuttoff = f_signal.copy()
-    for i in range(len(gains)-1):
-        cuttoff[((W<ranges[i+1]) & (W>ranges[i]))|((W<ranges[i+1]) & (W>ranges[i]))] *= 10**(int(gains[i])*10/20) 
-
-        
-    audio = irfft(cuttoff)
-    sf.write('./static/audio/proccessed.wav', audio, sr, subtype='PCM_24')
-
-    return audio
 
 def submit_sliders_values(req):
     values = []
@@ -106,17 +79,16 @@ def main():
                 uniform(session["len_audio"],session["sr"], session["sliders"], session["fft"])
                 
 
-            elif session["mode"] == "musical":
-                uniform(session["len_audio"],session["sr"], session["sliders"],session["fft"])
+            elif session["mode"] == "musical" or  session["mode"] == "vocal":
+                by_ranges(session["len_audio"],session["sr"], session["sliders"],session["fft"],session["mode"])
 
-            elif session["mode"] == "vocal":
-                uniform(session["len_audio"],session["sr"], session["sliders"],session["fft"])
 
             elif session["mode"] == "ECG":
                 uniform(session["len_audio"],session["sr"], session["sliders"],session["fft"])
         
         
         elif 'upload' in request.form:
+            print(request.files['file'])
             if request.files['file']:
                 file = request.files['file']
                 audio, session["sr"] = librosa.load(file)
@@ -136,8 +108,5 @@ def main():
     
     return render_template('index.html' ,sliders_values=json.dumps(session["sliders"]), mode = session["mode"])
 
-@app.route("/test",methods = ['POST', 'GET'])
-def test():
-    return render_template("tes.html")
 if __name__ == '__main__':
     app.run(debug=True)

@@ -107,6 +107,7 @@ body {
   -webkit-transition: .2s; /* 0.2 seconds transition on hover */
   transition: opacity .2s;
   border-radius: 5%;
+  min-height: 20px;
    
 
     
@@ -119,6 +120,7 @@ body {
     background: #21235c ; /* Green background */
     cursor: pointer; /* Cursor on hover */
     border-radius: 25%;
+    min-height: 20px;
   }
   .ranger::-webkit-slider-thumb:hover {
     -webkit-appearance: none; /* Override default look */
@@ -127,11 +129,6 @@ body {
     cursor: pointer; /* Cursor on hover */
   }
   
-  .zoom{
-    width: 700%;
-    
-
-  }
   .sliders {
     width: 92%;
     border-radius: 15px;
@@ -255,27 +252,6 @@ button:hover {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   input[type='radio']:after {
     width: 15px;
     height: 15px;
@@ -328,7 +304,7 @@ background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%); */
   border-top: none;
   border-radius: 0 0 20px 20px;
   margin-left: -15px;
-  margin-top: -9px;
+
 }
 
 .accordion:hover {
@@ -339,16 +315,87 @@ background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%); */
 
 
 /* Style the accordion panel. Note: hidden by default */
-.panel {
+.wave-spectrogram {
   padding: 0 18px;
-  background-color: white;
-  display: none;
+  backdrop-filter: brightness(80%);
+  max-height: 0;
   overflow: hidden;
-  transition: 1s;
+  transition: max-height 0.2s ease-out;
 }
+
+
 
 button:hover {
   background-color: #8BC6EC;
   background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
   
+}
+
+
+handle.wavesurfer-handle{
+  width: 9% !important;
+  max-width: 7px !important;
+ 
+}
+
+
+.visuals{
+width: calc(100% - 50px);
+margin: auto;
+position: relative;
+}
+
+handle.wavesurfer-handle.wavesurfer-handle-end:before{
+bottom: -17px !important;
+top: unset !important;
+} 
+
+
+#waveform wave{
+  display: block;
+  position: relative;
+  user-select: none;
+  height: 128px;
+  cursor: auto;
+  overflow: unset !important;
+}
+input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.zoom{
+  margin-right: 5%;
+}
+.playback{
+  margin-left: 5%;
+}
+.custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.custom-file-input::before {
+  content: 'Select some files';
+  display: inline-block;
+  background: linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+.custom-file-input:hover::before {
+  border-color: black;
+}
+.custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
