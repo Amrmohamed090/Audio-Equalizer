@@ -1,2 +1,6 @@
-# DSP_task2_2
+# Audio Equalizer Web application 
+created using: Flask, javascript, wavesurfer
+
+![](https://github.com/Audio-Equalizer/GIF.gif)
+
  
