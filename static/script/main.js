@@ -1,5 +1,34 @@
 //selecting all required elements
 
+
+
+var wavesurfer_original = WaveSurfer.create({
+  // Use the id or class-name of the element you created, as a selector
+  container: "#waveform",
+  // The color can be either a simple CSS color or a Canvas gradient
+  waveColor: "grey",
+  progressColor: "hsla(200, 100%, 30%, 0.5)",
+  cursorColor: "#fff",
+  overflow: "hidden",
+  // This parameter makes the waveform look like SoundCloud's player
+  barWidth: 3,
+  plugins: [
+    WaveSurfer.spectrogram.create({
+      wavesurfer_original: wavesurfer_original,
+        container: "#wave-spectrogram2",
+        labels: true,
+        
+    })
+    ,
+    WaveSurfer.regions.create({})
+]
+});
+WaveSurfer.util
+.fetchFile({ url: './static/script/colordata.json', responseType: 'json' })
+.on('success', colorMap => {
+
+    initAndLoadSpectrogram(colorMap);
+});
 var wavesurfer = WaveSurfer.create({
   // Use the id or class-name of the element you created, as a selector
   container: "#waveform",
@@ -42,36 +71,8 @@ WaveSurfer.util
 
 
 wavesurfer.load("static/audio/proccessed.wav");
-
-var wavesurfer_original = WaveSurfer.create({
-  // Use the id or class-name of the element you created, as a selector
-  container: "#waveform",
-  // The color can be either a simple CSS color or a Canvas gradient
-  waveColor: "grey",
-  progressColor: "hsla(200, 100%, 30%, 0.5)",
-  cursorColor: "#fff",
-  overflow: "hidden",
-  // This parameter makes the waveform look like SoundCloud's player
-  barWidth: 3,
-  plugins: [
-    WaveSurfer.spectrogram.create({
-      wavesurfer_original: wavesurfer_original,
-        container: "#wave-spectrogram2",
-        labels: true,
-        
-    })
-    ,
-    WaveSurfer.regions.create({})
-]
-});
-WaveSurfer.util
-.fetchFile({ url: './static/script/colordata.json', responseType: 'json' })
-.on('success', colorMap => {
-
-    initAndLoadSpectrogram(colorMap);
-});
 //responsive code starts
-figurs = [wavesurfer,wavesurfer_original]
+figurs = [wavesurfer_original,wavesurfer]
 for (var i; i<2; i++){
 const resizeObserver = new ResizeObserver(entries => {
   for (let entry of entries) {
