@@ -32,6 +32,10 @@
 </head>
 
 <body>
+  <div class="input row"  style="margin-bottom: 10%;">
+    <input type="range" id = "zoom-slider" class="ranger zoom col-2" title="zoom" name="" value=1 min="1" max="200" oninput="this.nextElementSibling.value = this.value" /><output class="">1</output>
+    <input type="range" id = "playback-slider" class="ranger playback col-2" title="playback" name="" value=1 min="0.25" max="2" step="0.25" onclick="change_speed()" oninput="this.nextElementSibling.value = this.value + 'x'"/><output class="">1x</output>
+  </div>
   <div class="container">
     
     <div id="original"></div>
@@ -76,12 +80,7 @@
           <label for="vocal">Vocal</label><br>
 
 
-          {% if mode == 'ECG'%}
-          <input type="radio" id="ECG" name="Mode" value="ECG" checked="checked">
-          {%else%}
-          <input type="radio" id="ECG" name="Mode" value="ECG">
-          {%endif%}
-          <label for="ECG">ECG</label>
+          
           <!-- 
           <div class="buttons">
             <button type="submit" name="submit"  value="submit" class="sin btn btn-primary" onclick="UpdateStatus();">
@@ -96,10 +95,7 @@
         <div class="sliders row card" id="sliders"></div>
       </div>
     </form>
-    <div class="input row"  style="margin-top: 5%;">
-      <input type="range" id = "zoom-slider" class="ranger zoom col-2" title="zoom" name="" value=1 min="1" max="200" oninput="this.nextElementSibling.value = this.value" /><output class="">1</output>
-      <input type="range" id = "playback-slider" class="ranger playback col-2" title="playback" name="" value=1 min="0.25" max="2" step="0.25" onclick="change_speed()" oninput="this.nextElementSibling.value = this.value + 'x'"/><output class="">1x</output>
-    </div>
+   
   </div>
   </div>
   <div class="footer">
@@ -112,8 +108,7 @@
           <label class="custom-file-upload">
           
           <input type="file" id="file_upload" name=file>
-          Select
-          
+          Select Audio
         </label>
         <span id="file-selected"></span>
         

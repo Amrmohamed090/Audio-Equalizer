@@ -32,6 +32,6 @@ def by_ranges(length,sr,gains,f_signal,mode):
     for i in range(len(gains)):
         for r in ranges[i]:
             cutoff[((W<r[1]) & (W>r[0]))] *= 10**(int(gains[i])*np.hanning(len(cutoff[(W>r[0])&(W<r[1])]))/20)
-
+    cutoff[W>3000] *=0
     save(cutoff, sr)
 
